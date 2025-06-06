@@ -1,1 +1,886 @@
-# SundayBakeClub.ph
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunday Bake Club - オーブンのあるところ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #af2b2b 0%, #d04141 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1.5" fill="white" opacity="0.08"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.06"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .showcase {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            border-radius: 2px;
+        }
+
+        .cheesecake-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .cheesecake-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cheesecake-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            height: 250px;
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%);
+        }
+
+        .basque-bg {
+            background: linear-gradient(135deg, #D2691E, #CD853F, #F4A460) !important;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .card-content {
+            padding: 30px;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .card-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .explore-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .explore-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow: hidden;
+            position: relative;
+            animation: slideInDown 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+
+        .size-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .size-option {
+            background: white;
+            border: 3px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .size-option:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .size-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .size-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .size-image::before {
+            content: '';
+            position: absolute;
+            top: 0;    
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%);
+        }
+
+        .size-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .size-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .size-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .order-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+        }
+
+        .order-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .order-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .about {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .contact {
+            padding: 80px 20px;
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+
+        .contact-item {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .contact-item i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        .social-links {
+            margin-top: 30px;
+        }
+
+        .social-link {
+            display: inline-block;
+            margin: 0 15px;
+            padding: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            line-height: 20px;
+            text-align: center;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .cheesecake-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .size-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-cake {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: floatRandom 15s ease-in-out infinite;
+        }
+
+        @keyframes floatRandom {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -30px) rotate(90deg); }
+            50% { transform: translate(-30px, -50px) rotate(180deg); }
+            75% { transform: translate(-50px, 30px) rotate(270deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-cake" style="top: 10%; left: 10%; animation-delay: 0s;">🍰</div>
+        <div class="floating-cake" style="top: 20%; right: 15%; animation-delay: 3s;">🧀</div>
+        <div class="floating-cake" style="bottom: 30%; left: 20%; animation-delay: 6s;">🍰</div>
+        <div class="floating-cake" style="bottom: 10%; right: 10%; animation-delay: 9s;">🧀</div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Sunday Bake Club</h1>
+            <p>オーブンのあるところ</p>
+            <a href="#showcase" class="cta-button">Explore Our Creations</a>
+        </div>
+    </section>
+
+    <section id="showcase" class="showcase">
+        <h2 class="section-title">Our Signature Pastries</h2>
+        <div class="cheesecake-grid">
+            <div class="cheesecake-card">
+                <div class="card-image basque-bg">🍰</div>
+                <div class="card-content">
+                    <h3 class="card-title">Burnt Basque Cheesecake</h3>
+                    <p class="card-description">Rich, creamy, and indulgent. Our signature burnt Basque style cheesecake with a perfectly caramelized top and velvety smooth texture that melts in your mouth.</p>
+                    <div class="card-price">₱49~749</div>
+                    <button class="explore-btn" onclick="exploreCheesecake('Burnt Basque', '🍰', 'basque-bg')">Explore</button>
+                </div>
+            </div>
+
+            <div class="cheesecake-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #ff9a9e, #fecfef);">🍓</div>
+                <div class="card-content">
+                    <h3 class="card-title">Strawberry Bliss</h3>
+                    <p class="card-description">Fresh strawberries meet creamy cheesecake in this delightful creation. Topped with strawberry compote and fresh berry garnish for the perfect balance of sweet and tangy.</p>
+                    <div class="card-price">₱520</div>
+                    <button class="explore-btn" onclick="exploreCheesecake('Strawberry Bliss', '🍓', 'linear-gradient(135deg, #ff9a9e, #fecfef)')">Explore</button>
+                </div>
+            </div>
+
+            <div class="cheesecake-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #8B4513, #D2691E);">🍫</div>
+                <div class="card-content">
+                    <h3 class="card-title">Chocolate Decadence</h3>
+                    <p class="card-description">For chocolate lovers only! Rich chocolate cheesecake with cocoa-infused crust, topped with chocolate ganache and chocolate shavings. Pure indulgence in every bite.</p>
+                    <div class="card-price">₱580</div>
+                    <button class="explore-btn" onclick="exploreCheesecake('Chocolate Decadence', '🍫', 'linear-gradient(135deg, #8B4513, #D2691E)')">Explore</button>
+                </div>
+            </div>
+
+            <div class="cheesecake-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #FFE5B4, #DEB887);">🥭</div>
+                <div class="card-content">
+                    <h3 class="card-title">Tropical Mango</h3>
+                    <p class="card-description">Taste the tropics with our mango cheesecake featuring fresh Philippine mangoes. Light, refreshing, and bursting with tropical flavors that transport you to paradise.</p>
+                    <div class="card-price">₱500</div>
+                    <button class="explore-btn" onclick="exploreCheesecake('Tropical Mango', '🥭', 'linear-gradient(135deg, #FFE5B4, #DEB887)')">Explore</button>
+                </div>
+            </div>
+
+            <div class="cheesecake-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #E6E6FA, #DDA0DD);">🫐</div>
+                <div class="card-content">
+                    <h3 class="card-title">Blueberry Dream</h3>
+                    <p class="card-description">Bursting with fresh blueberries, this cheesecake offers a perfect balance of creamy texture and fruity freshness. Topped with blueberry compote and mint leaves.</p>
+                    <div class="card-price">₱540</div>
+                    <button class="explore-btn" onclick="exploreCheesecake('Blueberry Dream', '🫐', 'linear-gradient(135deg, #E6E6FA, #DDA0DD)')">Explore</button>
+                </div>
+            </div>
+
+            <div class="cheesecake-card">
+                <div class="card-image" style="background: linear-gradient(135deg, #98FB98, #90EE90);">🥝</div>
+                <div class="card-content">
+                    <h3 class="card-title">Kiwi Delight</h3>
+                    <p class="card-description">Unique and refreshing kiwi cheesecake with a tangy twist. The perfect combination of sweet and tart flavors with beautiful green kiwi slices on top.</p>
+                    <div class="card-price">₱530</div>
+                    <button class="explore-btn" onclick="exploreCheesecake('Kiwi Delight', '🥝', 'linear-gradient(135deg, #98FB98, #90EE90)')">Explore</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="cheesecakeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Cheesecake Options</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="size-options" id="sizeOptions">
+                    <!-- Size options will be populated by JavaScript -->
+                </div>
+                <div class="order-section">
+                    <button class="order-btn" id="orderBtn" onclick="placeOrder()" disabled>
+                        Select a size to order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="about">
+        <div class="about-content">
+            <h2>Our Story</h2>
+            <p>It all began with a simple love for baking. As word spread and more people tasted our creations, the requests started pouring in. So my partner and I thought—why not share it with the world? What started as a passion quickly became a favorite treat for so many.</p>
+            <p>From our kitchen to your table, we ensure every slice delivers the perfect balance of creamy texture, rich flavor, and pure indulgence that makes our cheesecakes truly special.</p>
+        </div>
+    </section>
+
+    <section class="contact">
+        <div class="contact-content">
+            <h2 class="section-title">Get In Touch</h2>
+            <p>Ready to order your perfect cheesecake? Contact us today!</p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    📱 <strong>Phone:</strong> +63 969 396 7208
+                </div>
+                <div class="contact-item">
+                    📧 <strong>Email:</strong> sundaybakeclub.ph@gmail.com
+                </div>
+                <div class="contact-item">
+                    📍 <strong>Location:</strong> Brgy. Timabo, City of Binan, Laguna
+                </div>
+                <div class="contact-item">
+                    ⏰ <strong>Hours:</strong> Daily 9AM - 5PM
+                </div>
+                
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61576542148220" class="social-link" target="_blank">f</a>
+                    <a href="https://www.instagram.com/sundaybakeclub.ph?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link">IG</a>
+                    <a href="https://www.tiktok.com/@sundaybakeclub.ph?is_from_webapp=1&sender_device=pc" class="social-link">TiK</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let selectedCheesecake = '';
+        let selectedSize = '';
+        let selectedPrice = 0;
+
+        // Size data for different cheesecakes
+        const cheesecakeSizes = {
+            'Burnt Basque': [
+                { name: 'One Piece', price: 49, description: 'Perfect for one person', emoji: '🧁' },
+                { name: 'Box of 3', price: 149, description: 'Serves 2-3 people', emoji: '🍰' },
+                { name: 'Box of 6', price: 299, description: 'Serves 4-5 people', emoji: '🧁' },
+                { name: 'Box of 12', price: 599, description: 'Serves 6-20 people', emoji: '🧁' },
+                { name: 'Box of 15', price: 749, description: 'Perfect for parties (8-15 people)', emoji: '🎂' }
+            ],
+            'Strawberry Bliss': [
+                { name: 'Regular', price: 520, description: 'Serves 4-6 people', emoji: '🍰' },
+                { name: 'Large', price: 850, description: 'Perfect for parties (8-10 people)', emoji: '🎂' }
+            ],
+            'Chocolate Decadence': [
+                { name: 'Regular', price: 580, description: 'Serves 4-6 people', emoji: '🍰' },
+                { name: 'Large', price: 920, description: 'Perfect for parties (8-10 people)', emoji: '🎂' }
+            ],
+            'Tropical Mango': [
+                { name: 'Regular', price: 500, description: 'Serves 4-6 people', emoji: '🍰' },
+                { name: 'Large', price: 820, description: 'Perfect for parties (8-10 people)', emoji: '🎂' }
+            ],
+            'Blueberry Dream': [
+                { name: 'Regular', price: 540, description: 'Serves 4-6 people', emoji: '🍰' },
+                { name: 'Large', price: 870, description: 'Perfect for parties (8-10 people)', emoji: '🎂' }
+            ],
+            'Kiwi Delight': [
+                { name: 'Regular', price: 530, description: 'Serves 4-6 people', emoji: '🍰' },
+                { name: 'Large', price: 860, description: 'Perfect for parties (8-10 people)', emoji: '🎂' }
+            ]
+        };
+
+        function exploreCheesecake(cakeName, emoji, background) {
+            selectedCheesecake = cakeName;
+            selectedSize = '';
+            selectedPrice = 0;
+            
+            const modal = document.getElementById('cheesecakeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const sizeOptions = document.getElementById('sizeOptions');
+            const orderBtn = document.getElementById('orderBtn');
+            
+            modalTitle.textContent = cakeName;
+            sizeOptions.innerHTML = '';
+            
+            const sizes = cheesecakeSizes[cakeName] || [];
+            
+            sizes.forEach((size, index) => {
+                const sizeDiv = document.createElement('div');
+                sizeDiv.className = 'size-option';
+                sizeDiv.onclick = () => selectSize(size.name, size.price, index);
+                
+                sizeDiv.innerHTML = `
+                    <div class="size-image" style="background: ${background}">
+                        ${size.emoji}
+                    </div>
+                    <div class="size-name">${size.name}</div>
+                    <div class="size-price">₱${size.price}</div>
+                    <div class="size-description">${size.description}</div>
+                `;
+                
+                sizeOptions.appendChild(sizeDiv);
+            });
+            
+            orderBtn.textContent = 'Select a size to order';
+            orderBtn.disabled = true;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function selectSize(sizeName, price, index) {
+            selectedSize = sizeName;
+            selectedPrice = price;
+            
+            // Remove selected class from all options
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            document.querySelectorAll('.size-option')[index].classList.add('selected');
+            
+            // Update order button
+            const orderBtn = document.getElementById('orderBtn');
+            orderBtn.textContent = `Order ${sizeName} - ₱${price}`;
+            orderBtn.disabled = false;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('cheesecakeModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function placeOrder() {
+            if (selectedSize && selectedPrice) {
+                alert(`Thank you for your interest in our ${selectedCheesecake} (${selectedSize} - ₱${selectedPrice})! 
+
+Please contact us to place your order:
+📱 Phone: +63 969 396 7208
+📧 Email: sundaybakeclub.ph@gmail.com
+📘 Facebook: Sunday Bake Club
+
+We'll be happy to help you with your order!`);
+                closeModal();
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('cheesecakeModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add scroll animation to cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.cheesecake-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+        
+        // Analytics and visitor tracking (optional)
+        if (typeof gtag !== 'undefined') {
+            gtag('config', 'GA_MEASUREMENT_ID');
+        }
+
+        // Share functionality
+        function shareWebsite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Sunday Bake Club - オーブンのあるところ',
+                    text: 'Check out these amazing baked cheesecakes!',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy URL to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Website URL copied to clipboard!');
+                });
+            }
+        }
+
+        // Add share button
+        const shareBtn = document.createElement('button');
+        shareBtn.innerHTML = '📤 Share';
+        shareBtn.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        `;
+        shareBtn.onclick = shareWebsite;
+        shareBtn.onmouseover = () => {
+            shareBtn.style.transform = 'translateY(-3px)';
+            shareBtn.style.boxShadow = '0 8px 25px rgba(0,0,0,0.3)';
+        };
+        shareBtn.onmouseout = () => {
+            shareBtn.style.transform = 'translateY(0)';
+            shareBtn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+        };
+        document.body.appendChild(shareBtn);
+
+        // Performance optimization
+        if ('loading' in HTMLImageElement.prototype) {
+            // Browser supports lazy loading
+            document.querySelectorAll('img').forEach(img => {
+                img.loading = 'lazy';
+            });
+        }
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', function(event) {
+            const modal = document.getElementById('cheesecakeModal');
+            if (modal.style.display === 'block' && event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        console.log('🌐 Sunday Bake Club website ready!');
+    </script>
+</body>
+</html>
